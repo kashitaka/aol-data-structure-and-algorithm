@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 )
 
 type ListNode struct {
@@ -86,23 +85,24 @@ const (
 
 func main() {
 	var sc = bufio.NewScanner(os.Stdin)
-	sc.Buffer(make([]byte, 64*1024), 65536) // max 65536. change if input may be longer
+	sc.Split(bufio.ScanWords)
 	sc.Scan()
 	sc.Text()
 	list := DoublyLinkedList{}
 	list.Init()
 	for sc.Scan() {
-		in := strings.Split(sc.Text(), " ")
-		command := in[0]
+		command := sc.Text()
 		switch command {
 		case INSERT:
-			key, _ := strconv.Atoi(in[1])
+			sc.Scan()
+			key, _ := strconv.Atoi(sc.Text())
 			node := &ListNode{
 				key: key,
 			}
 			list.Insert(node)
 		case DEL:
-			key, _ := strconv.Atoi(in[1])
+			sc.Scan()
+			key, _ := strconv.Atoi(sc.Text())
 			list.DeleteByKey(key)
 		case DEL_FIRST:
 			list.DeleteFirst()
